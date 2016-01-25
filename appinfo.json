@@ -2,12 +2,12 @@
   "uuid": "7a3bbc47-acfd-4018-8459-461f42ab5b32",
   "shortName": "basicWatchface",
   "longName": "basicWatchface",
-  "companyName": "MakeAwesomeHappen",
+  "companyName": "Jeremy Carlsten",
   "versionLabel": "1.0",
   "sdkVersion": "3",
   "targetPlatforms": ["aplite", "basalt", "chalk"],
   "watchapp": {
-    "watchface": false
+    "watchface": true
   },
   "appKeys": {
     "dummy": 0
