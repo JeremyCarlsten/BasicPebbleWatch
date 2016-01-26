@@ -1,25 +1,33 @@
 {
-  "uuid": "7a3bbc47-acfd-4018-8459-461f42ab5b32",
-  "shortName": "basicWatchface",
-  "longName": "basicWatchface",
-  "companyName": "Jeremy Carlsten",
-  "versionLabel": "1.0",
-  "sdkVersion": "3",
-  "targetPlatforms": ["aplite", "basalt", "chalk"],
-  "watchapp": {
-    "watchface": true
-  },
-  "appKeys": {
-    "dummy": 0
-  },
-  "resources": {
-    "media": [
+    "appKeys": {
+        "dummy": 0
+    },
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Jeremy Carlsten",
+    "longName": "basicWatchface",
+    "projectType": "native",
+    "resources": {
+        "media": [
             {
-              "type": "font",
-              "name": "PERFECT_DOS_30",
-              "file": "perfect-dos-vga.ttf",
-              "compatibility":"2.7"
+                "compatibility": "2.7",
+                "file": "fonts/perfect-dos-vga.ttf",
+                "name": "PERFECT_DOS_30",
+                "type": "font"
             }
-    ]
-  }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "basicWatchface",
+    "targetPlatforms": [
+        "aplite",
+        "basalt",
+        "chalk"
+    ],
+    "uuid": "7a3bbc47-acfd-4018-8459-461f42ab5b32",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
 }
