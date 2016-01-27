@@ -70,6 +70,7 @@ static void initialise_ui(void) {
   #ifndef PBL_SDK_2
     text_layer_set_background_color(s_time_text_layer, GColorDarkCandyAppleRed);
     text_layer_set_background_color(s_date_text_layer, GColorDarkCandyAppleRed);
+    text_layer_set_text_color(s_time_text_layer, GColorWhite);
     #else
     text_layer_set_background_color(s_time_text_layer, GColorWhite);
     text_layer_set_background_color(s_date_text_layer, GColorWhite);
