@@ -8,7 +8,7 @@ static TextLayer *s_time_text_layer;
 static TextLayer *s_temperature_text_layer;
 static BitmapLayer *s_bitmaplayer_1;
 static TextLayer *s_date_text_layer;
-static TextLayer *s_textlayer_2;
+static TextLayer *s_direction_text_layer;
 
 static void update_time(){
   time_t temp = time(NULL);
@@ -59,14 +59,14 @@ static void initialise_ui(void) {
   text_layer_set_font(s_date_text_layer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_date_text_layer);
 
-  // s_textlayer_2
-  s_textlayer_2 = text_layer_create(GRect(102, 143, 38, 21));
-  text_layer_set_background_color(s_textlayer_2, GColorBlack);
-  text_layer_set_text_color(s_textlayer_2, GColorWhite);
-  text_layer_set_text(s_textlayer_2, "N");
-  text_layer_set_font(s_textlayer_2, s_res_roboto_condensed_21);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_textlayer_2);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_textlayer_2);
+  // s_direction_text_layer
+  s_direction_text_layer = text_layer_create(GRect(102, 143, 38, 21));
+  text_layer_set_background_color(s_direction_text_layer, GColorBlack);
+  text_layer_set_text_color(s_direction_text_layer, GColorWhite);
+  text_layer_set_text(s_direction_text_layer, "N");
+  text_layer_set_font(s_direction_text_layer, s_res_roboto_condensed_21);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
 }
 
 static void destroy_ui(void) {
@@ -75,7 +75,7 @@ static void destroy_ui(void) {
   text_layer_destroy(s_temperature_text_layer);
   bitmap_layer_destroy(s_bitmaplayer_1);
   text_layer_destroy(s_date_text_layer);
-  text_layer_destroy(s_textlayer_2);
+  text_layer_destroy(s_direction_text_layer);
 }
 // END AUTO-GENERATED UI CODE
 
