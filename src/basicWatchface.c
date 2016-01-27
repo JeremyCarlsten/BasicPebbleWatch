@@ -34,10 +34,10 @@ static void initialise_ui(void) {
     window_set_fullscreen(s_window, 1);
   #endif
 
-  s_res_bitham_30_black = fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK);
+  s_res_bitham_30_black = fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD);
   s_res_roboto_condensed_21 = fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21);
   // s_time_text_layer
-  s_time_text_layer = text_layer_create(GRect(0, 16, 144, 36));
+  s_time_text_layer = text_layer_create(GRect(0, 17, 144, 50));
   text_layer_set_text(s_time_text_layer, "03:04");
   text_layer_set_text_alignment(s_time_text_layer, GTextAlignmentCenter);
   text_layer_set_font(s_time_text_layer, s_res_bitham_30_black);
@@ -45,12 +45,12 @@ static void initialise_ui(void) {
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_time_text_layer);
 
   // s_temperature_text_layer
-  s_temperature_text_layer = text_layer_create(GRect(2, 141, 150, 49));
+  s_temperature_text_layer = text_layer_create(GRect(10, 0, 110, 15));
   text_layer_set_background_color(s_temperature_text_layer, GColorBlack);
   text_layer_set_text_color(s_temperature_text_layer, GColorWhite);
   text_layer_set_text(s_temperature_text_layer, "...");
-  text_layer_set_text_alignment(s_temperature_text_layer, GTextAlignmentCenter);
-  text_layer_set_font(s_temperature_text_layer, s_res_roboto_condensed_21);
+  //text_layer_set_text_alignment(s_temperature_text_layer, GTextAlignmentCenter);
+  //text_layer_set_font(s_temperature_text_layer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_temperature_text_layer);
 
   // s_battery_textlayer
@@ -61,7 +61,7 @@ static void initialise_ui(void) {
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_battery_textlayer);
 
   // s_date_layer
-  s_date_text_layer = text_layer_create(GRect(15, 52, 116, 25));
+  s_date_text_layer = text_layer_create(GRect(15, 63, 116, 25));
   text_layer_set_text(s_date_text_layer, "00/00/0000");
   text_layer_set_text_alignment(s_date_text_layer, GTextAlignmentCenter);
   text_layer_set_font(s_date_text_layer, s_res_roboto_condensed_21);
