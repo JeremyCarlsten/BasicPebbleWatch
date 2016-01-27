@@ -164,7 +164,7 @@ static void init() {
   update_time();
 
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
-  tick_timer_service_subscribe(DAY_UNIT, tick_handler);
+  //tick_timer_service_subscribe(DAY_UNIT, tick_handler);
 
   //Battery
   battery_state_service_subscribe(battery_handler);
