@@ -9,9 +9,8 @@ static GFont s_res_bitham_30_black;
 static GFont s_res_roboto_condensed_21;
 static TextLayer *s_time_text_layer;
 static TextLayer *s_temperature_text_layer;
-static BitmapLayer *s_bitmaplayer_1;
+static TextLayer *s_battery_textlayer;
 static TextLayer *s_date_text_layer;
-// static char degreeSymbol[6] = "\u00B0";
 static TextLayer *s_direction_text_layer;
 
 
@@ -54,9 +53,12 @@ static void initialise_ui(void) {
   text_layer_set_font(s_temperature_text_layer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_temperature_text_layer);
 
-  // s_bitmaplayer_1
-  s_bitmaplayer_1 = bitmap_layer_create(GRect(3, 110, 33, 31));
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_1);
+  // s_battery_textlayer
+  s_battery_textlayer = text_layer_create(GRect(110, 0, 30, 15));
+  text_layer_set_background_color(s_battery_textlayer, GColorBlack);
+  text_layer_set_text_color(s_battery_textlayer, GColorWhite);
+  text_layer_set_text(s_battery_textlayer, "...");
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_battery_textlayer);
 
   // s_date_layer
   s_date_text_layer = text_layer_create(GRect(15, 52, 116, 25));
@@ -64,15 +66,6 @@ static void initialise_ui(void) {
   text_layer_set_text_alignment(s_date_text_layer, GTextAlignmentCenter);
   text_layer_set_font(s_date_text_layer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_date_text_layer);
-
-  // // s_direction_text_layer
-  // s_direction_text_layer = text_layer_create(GRect(102, 143, 38, 21));
-  // text_layer_set_background_color(s_direction_text_layer, GColorBlack);
-  // text_layer_set_text_color(s_direction_text_layer, GColorWhite);
-  // text_layer_set_text(s_direction_text_layer, "N");
-  // text_layer_set_font(s_direction_text_layer, s_res_roboto_condensed_21);
-  // layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
-  // layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
 
   #ifndef PBL_SDK_2
     text_layer_set_background_color(s_time_text_layer, GColorDarkCandyAppleRed);
@@ -87,7 +80,7 @@ static void destroy_ui(void) {
   window_destroy(s_window);
   text_layer_destroy(s_time_text_layer);
   text_layer_destroy(s_temperature_text_layer);
-  bitmap_layer_destroy(s_bitmaplayer_1);
+  text_layer_destroy(s_battery_textlayer);
   text_layer_destroy(s_date_text_layer);
   text_layer_destroy(s_direction_text_layer);
 }
@@ -108,6 +101,17 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
    // Send the message!
    app_message_outbox_send();
  }
+}
+
+static void battery_handler(BatteryChargeState charge_state) {
+  static char s_battery_buffer[16];
+
+  if (charge_state.is_charging) {
+    snprintf(s_battery_buffer, sizeof(s_battery_buffer), "--+");
+  } else {
+    snprintf(s_battery_buffer, sizeof(s_battery_buffer), "%d%%", charge_state.charge_percent);
+  }
+  text_layer_set_text(s_battery_textlayer, s_battery_buffer);
 }
 
 static void handle_window_unload(Window* window) {
@@ -157,8 +161,14 @@ static void init() {
 
   //start date/time
   update_time();
+
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   tick_timer_service_subscribe(DAY_UNIT, tick_handler);
+
+  //Battery
+  battery_state_service_subscribe(battery_handler);
+  BatteryChargeState charge_state = battery_state_service_peek();
+  battery_handler(charge_state);
 
   // Register callbacks
   app_message_register_inbox_received(inbox_received_callback);
