@@ -50,6 +50,7 @@ static void initialise_ui(void) {
   text_layer_set_background_color(s_temperature_text_layer, GColorBlack);
   text_layer_set_text_color(s_temperature_text_layer, GColorWhite);
   text_layer_set_text(s_temperature_text_layer, "...");
+  text_layer_set_text_alignment(s_temperature_text_layer, GTextAlignmentCenter);
   text_layer_set_font(s_temperature_text_layer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_temperature_text_layer);
 
@@ -64,14 +65,14 @@ static void initialise_ui(void) {
   text_layer_set_font(s_date_text_layer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_date_text_layer);
 
-  // s_direction_text_layer
-  s_direction_text_layer = text_layer_create(GRect(102, 143, 38, 21));
-  text_layer_set_background_color(s_direction_text_layer, GColorBlack);
-  text_layer_set_text_color(s_direction_text_layer, GColorWhite);
-  text_layer_set_text(s_direction_text_layer, "N");
-  text_layer_set_font(s_direction_text_layer, s_res_roboto_condensed_21);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
+  // // s_direction_text_layer
+  // s_direction_text_layer = text_layer_create(GRect(102, 143, 38, 21));
+  // text_layer_set_background_color(s_direction_text_layer, GColorBlack);
+  // text_layer_set_text_color(s_direction_text_layer, GColorWhite);
+  // text_layer_set_text(s_direction_text_layer, "N");
+  // text_layer_set_font(s_direction_text_layer, s_res_roboto_condensed_21);
+  // layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
+  // layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
 }
 
 static void destroy_ui(void) {
