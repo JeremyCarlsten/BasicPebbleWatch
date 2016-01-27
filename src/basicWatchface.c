@@ -60,7 +60,7 @@ static void initialise_ui(void) {
 
   // s_date_layer
   s_date_text_layer = text_layer_create(GRect(15, 52, 116, 25));
-  text_layer_set_text(s_date_text_layer, "01/24/2016");
+  text_layer_set_text(s_date_text_layer, "00/00/0000");
   text_layer_set_text_alignment(s_date_text_layer, GTextAlignmentCenter);
   text_layer_set_font(s_date_text_layer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_date_text_layer);
@@ -73,6 +73,14 @@ static void initialise_ui(void) {
   // text_layer_set_font(s_direction_text_layer, s_res_roboto_condensed_21);
   // layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
   // layer_add_child(window_get_root_layer(s_window), (Layer *)s_direction_text_layer);
+
+  #ifndef PBL_SDK_2
+    text_layer_set_background_color(s_time_text_layer, GColorDarkCandyAppleRed);
+    text_layer_set_background_color(s_date_text_layer, GColorDarkCandyAppleRed);
+    #else
+    text_layer_set_background_color(s_time_text_layer, GColorWhite);
+    text_layer_set_background_color(s_date_text_layer, GColorWhite);
+  #endif
 }
 
 static void destroy_ui(void) {
