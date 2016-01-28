@@ -7,12 +7,14 @@
 static Window *s_window;
 static GFont s_res_bitham_30_black;
 static GFont s_res_roboto_condensed_21;
+static GFont s_res_roboto_condensed_16;
 static TextLayer *s_time_text_layer;
 static TextLayer *s_temperature_text_layer;
 static TextLayer *s_battery_textlayer;
 static TextLayer *s_date_text_layer;
 static TextLayer *s_direction_text_layer;
-
+static Layer *s_battery_layer;
+static int s_battery_level;
 
 static void update_time(){
   time_t temp = time(NULL);
@@ -27,6 +29,24 @@ static void update_time(){
   text_layer_set_text(s_date_text_layer, s_date_buffer);
 }
 
+static void battery_update_proc(Layer *layer, GContext *ctx) {
+  GRect bounds = layer_get_bounds(layer);
+
+  // Find the width of the bar
+  int width = (int)(float)(((float)s_battery_level / 100.0F) * 114.0F);
+
+  // Draw the background
+  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_fill_rect(ctx, bounds, 0, GCornerNone);
+  //graphics_context_set_stroke_color(ctx, GColorWhite);
+  //graphics_context_set_stroke_width(ctx,2);
+
+  // Draw the bar
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  graphics_fill_rect(ctx, GRect(0, 0, width, bounds.size.h), 0, GCornerNone);
+
+}
+
 static void initialise_ui(void) {
   s_window = window_create();
   window_set_background_color(s_window, GColorBlack);
@@ -36,8 +56,9 @@ static void initialise_ui(void) {
 
   s_res_bitham_30_black = fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD);
   s_res_roboto_condensed_21 = fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21);
+  s_res_roboto_condensed_16 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_16));
   // s_time_text_layer
-  s_time_text_layer = text_layer_create(GRect(0, 17, 144, 50));
+  s_time_text_layer = text_layer_create(GRect(0, 20, 144, 50));
   text_layer_set_text(s_time_text_layer, "03:04");
   text_layer_set_text_alignment(s_time_text_layer, GTextAlignmentCenter);
   text_layer_set_font(s_time_text_layer, s_res_bitham_30_black);
@@ -45,24 +66,26 @@ static void initialise_ui(void) {
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_time_text_layer);
 
   // s_temperature_text_layer
-  s_temperature_text_layer = text_layer_create(GRect(10, 0, 110, 15));
+  s_temperature_text_layer = text_layer_create(GRect(10, 0, 110, 16));
   text_layer_set_background_color(s_temperature_text_layer, GColorBlack);
   text_layer_set_text_color(s_temperature_text_layer, GColorWhite);
   text_layer_set_text(s_temperature_text_layer, "...");
   //text_layer_set_text_alignment(s_temperature_text_layer, GTextAlignmentCenter);
-  //text_layer_set_font(s_temperature_text_layer, s_res_roboto_condensed_21);
+  text_layer_set_font(s_temperature_text_layer, s_res_roboto_condensed_16);;
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_temperature_text_layer);
 
   // s_battery_textlayer
-  s_battery_textlayer = text_layer_create(GRect(110, 0, 30, 15));
+  s_battery_textlayer = text_layer_create(GRect(110, 0, 30, 16));
   text_layer_set_background_color(s_battery_textlayer, GColorBlack);
   text_layer_set_text_color(s_battery_textlayer, GColorWhite);
   text_layer_set_text(s_battery_textlayer, "...");
+  text_layer_set_font(s_battery_textlayer, s_res_roboto_condensed_16);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_battery_textlayer);
 
   // s_date_layer
-  s_date_text_layer = text_layer_create(GRect(15, 63, 116, 25));
+  s_date_text_layer = text_layer_create(GRect(15, 67, 116, 25));
   text_layer_set_text(s_date_text_layer, "00/00/0000");
+  text_layer_set_text_color(s_date_text_layer, GColorWhite);
   text_layer_set_text_alignment(s_date_text_layer, GTextAlignmentCenter);
   text_layer_set_font(s_date_text_layer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_date_text_layer);
@@ -75,6 +98,15 @@ static void initialise_ui(void) {
     text_layer_set_background_color(s_time_text_layer, GColorWhite);
     text_layer_set_background_color(s_date_text_layer, GColorWhite);
   #endif
+  
+  
+  // Create battery meter Layer
+  s_battery_layer = layer_create(GRect(10, 0, 30, 10));
+  layer_set_update_proc(s_battery_layer, battery_update_proc);
+
+
+  // Add to Window
+  layer_add_child(window_get_root_layer(s_window), s_battery_layer);
 }
 
 static void destroy_ui(void) {
@@ -84,6 +116,8 @@ static void destroy_ui(void) {
   text_layer_destroy(s_battery_textlayer);
   text_layer_destroy(s_date_text_layer);
   text_layer_destroy(s_direction_text_layer);
+  
+  fonts_unload_custom_font(s_res_roboto_condensed_21);
 }
 // END AUTO-GENERATED UI CODE
 
@@ -113,6 +147,7 @@ static void battery_handler(BatteryChargeState charge_state) {
     snprintf(s_battery_buffer, sizeof(s_battery_buffer), "%d%%", charge_state.charge_percent);
   }
   text_layer_set_text(s_battery_textlayer, s_battery_buffer);
+  //s_battery_level = charge_state.charge_percent;
 }
 
 static void handle_window_unload(Window* window) {
